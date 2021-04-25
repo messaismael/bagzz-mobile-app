@@ -28,49 +28,94 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  
+  final List<Widget> _children = [
+    Container(
+      padding: EdgeInsets.all(10.0),
+      child: ProductList()
+    ),
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          title: Text(
-            "bagzz",
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900),
-          ),
-          titleSpacing: 0,
-          leading: GestureDetector(
-            onTap: () {/* Write listener code here */},
-            child: Icon(
-              Icons.menu,
-              size: 30.0,
-            ),
-          ),
-          actions: <Widget>[
-            Padding(
-                padding: EdgeInsets.fromLTRB(15.0, 10.0, 20.0, 10.0),
-                child: GestureDetector(
-                  onTap: () {},
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(15.0),
-                    child: Image.asset(
-                      "assets/images/avatar.png",
-                      width: 35.0,
-                      height: 60.0,
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                )),
-          ],
+        title: Text(
+          "bagzz",
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900),
         ),
-        body:  Container(
-          padding: EdgeInsets.all(10.0),
-          child:ProductList() //(name: "Artsy", imageUrl: "assets/images/artsy.png",),
-        )
+        titleSpacing: 0,
+        leading: GestureDetector(
+          onTap: () {/* Write listener code here */},
+          child: Icon(
+            Icons.menu,
+            size: 30.0,
+          ),
+        ),
+        actions: <Widget>[
+          Padding(padding: EdgeInsets.fromLTRB(15.0, 10.0, 20.0, 10.0),
+            child: GestureDetector(
+              onTap: () {},
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(15.0),
+                child: Image.asset(
+                  "assets/images/avatar.png",
+                  width: 35.0,
+                  height: 60.0,
+                  fit: BoxFit.fill,
+                ),
+              ),
+            )
+          ),
+        ],
+      ),
+      body:  Stack(
+        children:[
+         _children[0],
+          Positioned(
+            left: 10,
+            right: 10,
+            bottom: 0,
+            child: bottomNavigationBar(),
+          ),
+        ]
+      )
     );
   }
 }
 
+
+Widget bottomNavigationBar(){
+  return ClipRRect(
+    borderRadius: BorderRadius.all(Radius.circular(30.0)),
+    child:BottomNavigationBar(
+      selectedFontSize: 0,
+      type: BottomNavigationBarType.fixed,
+      backgroundColor: Colors.white,
+      fixedColor: Colors.black54,
+      unselectedItemColor: Colors.black,
+      items: [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home, size: 24,),
+          label: 'Home'
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.search, size: 24,),
+          label: 'Search',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.favorite, size: 24,),
+          label: 'Favorite',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.shopping_cart, size: 24,),
+          label: 'Cart',
+        )
+      ],
+    )
+  );
+}
 
 class ProductList extends StatefulWidget {
   @override
@@ -133,8 +178,9 @@ class _ProductCardState extends State<ProductCard> {
           Positioned(
             right: 5.0,
             top: 0,
-            child: GestureDetector( onTap:  _onFavorite,
-              child: Icon( _favorite? Icons.favorite: Icons.favorite_border,
+            child: GestureDetector( 
+              onTap:  _onFavorite,
+              child: Icon(_favorite? Icons.favorite: Icons.favorite_border,
                 size: 24,
                 color:_favorite? Colors.redAccent:null
               )

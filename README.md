@@ -1,6 +1,9 @@
-# flutter_app_layout
+# **E-commerce-mobile-app_layout**
 
-A new Flutter project.
+## **Stack**
+> Flutter
+
+**E-commere app** is a design implementation of [E-commere App](https://www.uistore.design/items/bagzz-free-shopping-app-ui-kit-for-figma/) designed by [Vijay Gupta](https://vijaygupta.work/?ref=uistore.design) 
 
 ## Getting Started
 
@@ -14,3 +17,9 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter, view our
 [online documentation](https://flutter.dev/docs), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+## **Overview**
+
+![Portrait](./screenshots/portrait.png)
+
+![Landscpe](./screenshots/landscape.png)
