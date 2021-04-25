@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'mockData.dart';
 void main() {
   runApp(MyApp());
 }
@@ -54,7 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(15.0),
                     child: Image.asset(
-                      'assets/images/avaatar.png',
+                      "assets/images/avatar.png",
                       width: 35.0,
                       height: 60.0,
                       fit: BoxFit.fill,
@@ -63,9 +63,41 @@ class _MyHomePageState extends State<MyHomePage> {
                 )),
           ],
         ),
-        body: SingleChildScrollView(
-          child: ProductCard(name: "Artsy", imageUrl:"assets/images/artsy.png" ,),
-        ));
+        body:  Container(
+          padding: EdgeInsets.all(10.0),
+          child:ProductList() //(name: "Artsy", imageUrl: "assets/images/artsy.png",),
+        )
+    );
+  }
+}
+
+
+class ProductList extends StatefulWidget {
+  @override
+  _ProductListState createState() => _ProductListState();
+}
+
+class _ProductListState extends State<ProductList> {
+  @override
+  Widget build(BuildContext context) {
+     var mediaQueryData = MediaQuery.of(context);
+    final double widthScreen = mediaQueryData.size.width;
+    final double heightScreen = mediaQueryData.size.height;
+
+    return OrientationBuilder(
+      builder: (context, orientation){
+        return GridView.extent(
+          maxCrossAxisExtent: 170.0,
+          crossAxisSpacing: 10.0,
+          mainAxisSpacing: 10.0,
+          childAspectRatio: orientation == Orientation.portrait? widthScreen/heightScreen:heightScreen/widthScreen, /*The key is the childAspectRatio. This value is use to determine the layout in GridView. In order to get the desired aspect you have to set it to the (itemWidth / itemHeight)*/ 
+          children: <Widget>[
+            for(var product in products)
+              ProductCard(name: product.name, imageUrl: product.picture),
+          ]
+        );
+      }
+    );
   }
 }
 
@@ -79,55 +111,64 @@ class ProductCard extends StatefulWidget {
 }
 
 class _ProductCardState extends State<ProductCard> {
+  bool _favorite = false;
+
+  void _onFavorite(){
+    setState(() {
+      _favorite = !_favorite;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
-        width: 169,
-        margin: EdgeInsets.only(top:20),
-        padding: EdgeInsets.only(top: 5, bottom: 20),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(2.0),
-          color: Color(0xFFF1F1F1),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
+      margin: EdgeInsets.only(top:15),
+      padding: EdgeInsets.only(top: 5, bottom: 15),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(2.0),
+        color: Color(0xFFF1F1F1),
+      ),
+      child: Stack(
+          alignment: Alignment.center,
+        children: [
+          Positioned(
+            right: 5.0,
+            top: 0,
+            child: GestureDetector( onTap:  _onFavorite,
+              child: Icon( _favorite? Icons.favorite: Icons.favorite_border,
+                size: 24,
+                color:_favorite? Colors.redAccent:null
+              )
+            )
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Container(
-                padding: EdgeInsets.only(left:10, right: 0),
-                //color: Colors.grey[500],
-                child: Image.asset(
-                  widget.imageUrl,
-                  width: 111,
-                  height: 111,
-                )
+                child: Image.asset(widget.imageUrl)
               ),
-              Icon(Icons.favorite, size: 17,color: Colors.redAccent)
-            ],
-          ),
-          Container(
-            margin: EdgeInsets.only(bottom:15, top:10),
-            child: Text(
-              widget.name, 
-              style: TextStyle( 
-                fontSize: 18.0,
-                color: Colors.black,
-                fontWeight: FontWeight.bold)
-            )),
-          Container(
-            padding: EdgeInsets.only(bottom: 0 , left:8, right:8 ),
-            decoration: BoxDecoration(
-              border: Border(bottom: BorderSide(color: Colors.black, width: 2.0)
-            )),
-            child:TextButton(
-              onPressed: () {},
-              child: Text("SHOP NOW", style: TextStyle(fontSize: 14.0,color: Colors.black, fontWeight: FontWeight.bold),)
-            )
+              Container(
+                margin: EdgeInsets.only(bottom:13, top:10),
+                child: Text(
+                  widget.name, 
+                  style: TextStyle( 
+                    fontSize: 18.0,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold)
+                )),
+              Container(
+                padding: EdgeInsets.only(left:8, right:8 ),
+                decoration: BoxDecoration(
+                  border: Border(bottom: BorderSide(color: Colors.black, width: 2.0)
+                )),
+                child:TextButton(
+                  onPressed: () {},
+                  child: Text("SHOP NOW", style: TextStyle(fontSize: 14.0,color: Colors.black, fontWeight: FontWeight.bold),)
+                )
+              )
+            ]
           )
-        ]
+        ],
       )
     );
   }
