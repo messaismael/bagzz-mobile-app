@@ -1,4 +1,4 @@
-# **E-commerce-mobile-app_layout**
+# **E-commerce-mobile-app**
 
 ## **Stack**
 > Flutter
