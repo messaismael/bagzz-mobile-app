@@ -1,6 +1,7 @@
 # **E-commerce-mobile-app**
 
 ## **Stack**
+
 > Flutter
 
 **E-commere app** is a design implementation of [E-commere App](https://www.uistore.design/items/bagzz-free-shopping-app-ui-kit-for-figma/) designed by [Vijay Gupta](https://vijaygupta.work/?ref=uistore.design) 
@@ -23,3 +24,8 @@ samples, guidance on mobile development, and a full API reference.
 ![Portrait](./screenshots/portrait.png)
 
 ![Landscpe](./screenshots/landscape.png)
+
+
+## **Author**
+
+> Messa Ismael

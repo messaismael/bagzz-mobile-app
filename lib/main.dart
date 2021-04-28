@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'mockData.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -30,10 +32,23 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   
   final List<Widget> _children = [
-    Container(
-      padding: EdgeInsets.all(10.0),
-      child: ProductList()
-    ),
+    SingleChildScrollView(
+      child: Column(
+        children: <Widget>[
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: CarouselWidget()
+              ),
+            ],
+          ),
+          Container(
+            padding: const EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 60.0),
+            child: ProductList()
+          ),
+        ],
+      ),
+    )
   ];
   @override
   Widget build(BuildContext context) {
@@ -117,6 +132,77 @@ Widget bottomNavigationBar(){
   );
 }
 
+
+class CarouselWidget extends StatefulWidget {
+  @override
+  _CarouselWidgetState createState() => _CarouselWidgetState();
+}
+
+class _CarouselWidgetState extends State<CarouselWidget> {
+
+  CarouselController buttonCarouselController = CarouselController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        CarouselSlider(
+          carouselController: buttonCarouselController,
+          options: CarouselOptions(
+            height: 205.0,
+            viewportFraction: 1.0,
+            ),
+          items: [1,2,3,4,5].map((i) {
+            return Builder(
+              builder: (BuildContext context) {
+                return Container(
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    color: Colors.blue
+                  ),
+                  child: Text('text $i', style: TextStyle(fontSize: 16.0),)
+                );
+              },
+            );
+          }).toList(),
+        ),
+        Positioned(
+          bottom: 0,
+          right: 65,
+          child:GestureDetector(
+            onTap: () => buttonCarouselController.previousPage(
+              duration: Duration(milliseconds: 300), 
+              curve: Curves.linear
+            ),
+            child: Container(
+              width: 50,
+              height: 50,
+              color: Colors.black,
+              child: Icon(Icons.arrow_back_sharp, color: Colors.white)
+            ),
+          )
+        ),
+        Positioned(
+          bottom: 0,
+          right: 10,
+          child:GestureDetector(
+            onTap: () => buttonCarouselController.nextPage(
+              duration: Duration(milliseconds: 300), 
+              curve: Curves.linear
+            ),
+            child: Container(
+              width: 50,
+              height: 50,
+              color: Colors.black,
+              child: Icon(Icons.arrow_forward, color: Colors.white )
+            ),
+          )
+        )
+      ]
+    );
+  }
+}
+
 class ProductList extends StatefulWidget {
   @override
   _ProductListState createState() => _ProductListState();
@@ -132,10 +218,12 @@ class _ProductListState extends State<ProductList> {
     return OrientationBuilder(
       builder: (context, orientation){
         return GridView.extent(
+          physics: new NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
           maxCrossAxisExtent: 170.0,
           crossAxisSpacing: 10.0,
           mainAxisSpacing: 10.0,
-          childAspectRatio: orientation == Orientation.portrait? widthScreen/heightScreen:heightScreen/widthScreen, /*The key is the childAspectRatio. This value is use to determine the layout in GridView. In order to get the desired aspect you have to set it to the (itemWidth / itemHeight)*/ 
+          childAspectRatio: 0.55,//orientation == Orientation.portrait? widthScreen/heightScreen: heightScreen/widthScreen, /*The key is the childAspectRatio. This value is use to determine the layout in GridView. In order to get the desired aspect you have to set it to the (itemWidth / itemHeight)*/ 
           children: <Widget>[
             for(var product in products)
               ProductCard(name: product.name, imageUrl: product.picture),
@@ -181,7 +269,7 @@ class _ProductCardState extends State<ProductCard> {
             child: GestureDetector( 
               onTap:  _onFavorite,
               child: Icon(_favorite? Icons.favorite: Icons.favorite_border,
-                size: 24,
+                size: 20,
                 color:_favorite? Colors.redAccent:null
               )
             )
