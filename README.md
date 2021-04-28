@@ -21,10 +21,14 @@ samples, guidance on mobile development, and a full API reference.
 
 ## **Overview**
 
-![Portrait](./screenshots/portrait.png)
+### **Portrait**
 
-![Landscpe](./screenshots/landscape.png)
+![Portrait](./screenshots/portrait1.png) ![Portrait](./screenshots/portrait2.png)
 
+### **Landscape**
+
+![Landscpe](./screenshots/landscape1.png)
+![Landscpe](./screenshots/landscape2.png)
 
 ## **Author**
 

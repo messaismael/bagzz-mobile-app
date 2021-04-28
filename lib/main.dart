@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'mockData.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -31,6 +33,13 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   
+  int _index= 0;
+  void _ontapBottomNav(int val){
+    setState(() {
+      _index = val;
+    });
+  }
+
   final List<Widget> _children = [
     SingleChildScrollView(
       child: Column(
@@ -48,7 +57,10 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-    )
+    ),
+    Container(decoration: BoxDecoration(border: Border.all(color: Colors.redAccent)), child: Center(child: Text("Search view"),),),
+    Container(decoration: BoxDecoration(border: Border.all(color: Colors.blueAccent)), child: Center(child: Text("Favorite view"),),),
+    Container(decoration: BoxDecoration(border: Border.all(color: Colors.greenAccent)),child: Center(child: Text("Cart view"),),)
   ];
   @override
   Widget build(BuildContext context) {
@@ -87,12 +99,12 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body:  Stack(
         children:[
-         _children[0],
+         _children[_index],
           Positioned(
             left: 10,
             right: 10,
             bottom: 0,
-            child: bottomNavigationBar(),
+            child: BottomNavBar(_index, _ontapBottomNav)
           ),
         ]
       )
@@ -101,37 +113,47 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 
-Widget bottomNavigationBar(){
-  return ClipRRect(
-    borderRadius: BorderRadius.all(Radius.circular(30.0)),
-    child:BottomNavigationBar(
-      selectedFontSize: 0,
-      type: BottomNavigationBarType.fixed,
-      backgroundColor: Colors.white,
-      fixedColor: Colors.black54,
-      unselectedItemColor: Colors.black,
-      items: [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home, size: 24,),
-          label: 'Home'
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.search, size: 24,),
-          label: 'Search',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.favorite, size: 24,),
-          label: 'Favorite',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.shopping_cart, size: 24,),
-          label: 'Cart',
-        )
-      ],
-    )
-  );
-}
+class BottomNavBar extends StatelessWidget {
 
+  int currentIndex = 0;
+  void Function(int) ontapped= (int){};
+
+  BottomNavBar(this.currentIndex,this.ontapped);
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.all(Radius.circular(30.0)),
+      child:BottomNavigationBar(
+        selectedFontSize: 0,
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: Colors.white,
+        fixedColor: Colors.blueGrey,
+        unselectedItemColor: Colors.black,
+        onTap: ontapped,
+        currentIndex: currentIndex,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home, size: 24,),
+            label: 'Home'
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search, size: 24,),
+            label: 'Search',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite, size: 24,),
+            label: 'Favorite',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shopping_cart, size: 24,),
+            label: 'Cart',
+          )
+        ],
+      )
+    );
+  }
+}
 
 class CarouselWidget extends StatefulWidget {
   @override
@@ -147,36 +169,54 @@ class _CarouselWidgetState extends State<CarouselWidget> {
     return Stack(
       children: [
         CarouselSlider(
-          carouselController: buttonCarouselController,
-          options: CarouselOptions(
-            height: 205.0,
-            viewportFraction: 1.0,
-            ),
-          items: [1,2,3,4,5].map((i) {
-            return Builder(
-              builder: (BuildContext context) {
-                return Container(
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(
-                    color: Colors.blue
-                  ),
-                  child: Text('text $i', style: TextStyle(fontSize: 16.0),)
-                );
-              },
-            );
-          }).toList(),
+            carouselController: buttonCarouselController,
+            options: CarouselOptions(
+              height: 205.0,
+              viewportFraction: 1.0,
+              ),
+            items: heroProducts.map((item) {
+              return Builder(
+                builder: (BuildContext context) {
+                  return Container(
+                    width: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.symmetric(horizontal: 10.0),
+                    decoration: BoxDecoration(
+                      //color: Colors.blue
+                    ),
+                    child: Stack(
+                      alignment:Alignment.centerLeft,
+                      children:[
+                        Image.asset(item.picture),
+                        Positioned(
+                          top: 60.0,
+                          right: 25.0,
+                          child:Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children:[
+                              Container(color:Colors.white, padding: EdgeInsets.only(left:3,), child:Text("This",style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),)),
+                              Container(color:Colors.white, padding: EdgeInsets.only(left:3,), child:Text("season's",style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),)),
+                              Container(color:Colors.white, padding: EdgeInsets.only(left:3,), child:Text("latest",style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),)),
+                            ]
+                          )
+                        ),
+                      ]
+                    )
+                  );
+                },
+              );
+            }).toList(),
         ),
         Positioned(
           bottom: 0,
-          right: 65,
+          right: 73.0,
           child:GestureDetector(
             onTap: () => buttonCarouselController.previousPage(
               duration: Duration(milliseconds: 300), 
               curve: Curves.linear
             ),
             child: Container(
-              width: 50,
-              height: 50,
+              width: 51,
+              height: 51,
               color: Colors.black,
               child: Icon(Icons.arrow_back_sharp, color: Colors.white)
             ),
@@ -184,15 +224,15 @@ class _CarouselWidgetState extends State<CarouselWidget> {
         ),
         Positioned(
           bottom: 0,
-          right: 10,
+          right: 20.0,
           child:GestureDetector(
             onTap: () => buttonCarouselController.nextPage(
               duration: Duration(milliseconds: 300), 
               curve: Curves.linear
             ),
             child: Container(
-              width: 50,
-              height: 50,
+              width: 51,
+              height: 51,
               color: Colors.black,
               child: Icon(Icons.arrow_forward, color: Colors.white )
             ),
@@ -211,25 +251,18 @@ class ProductList extends StatefulWidget {
 class _ProductListState extends State<ProductList> {
   @override
   Widget build(BuildContext context) {
-     var mediaQueryData = MediaQuery.of(context);
-    final double widthScreen = mediaQueryData.size.width;
-    final double heightScreen = mediaQueryData.size.height;
 
-    return OrientationBuilder(
-      builder: (context, orientation){
-        return GridView.extent(
-          physics: new NeverScrollableScrollPhysics(),
-          shrinkWrap: true,
-          maxCrossAxisExtent: 170.0,
-          crossAxisSpacing: 10.0,
-          mainAxisSpacing: 10.0,
-          childAspectRatio: 0.55,//orientation == Orientation.portrait? widthScreen/heightScreen: heightScreen/widthScreen, /*The key is the childAspectRatio. This value is use to determine the layout in GridView. In order to get the desired aspect you have to set it to the (itemWidth / itemHeight)*/ 
-          children: <Widget>[
-            for(var product in products)
-              ProductCard(name: product.name, imageUrl: product.picture),
-          ]
-        );
-      }
+    return GridView.extent(
+      physics: new NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      maxCrossAxisExtent: 170.0,
+      crossAxisSpacing: 10.0,
+      mainAxisSpacing: 10.0,
+      childAspectRatio: 0.55,/*The key is the childAspectRatio. This value is use to determine the layout in GridView. In order to get the desired aspect you have to set it to the (itemWidth / itemHeight)*/ 
+      children: <Widget>[
+        for(var product in products)
+          ProductCard(name: product.name, imageUrl: product.picture),
+      ]
     );
   }
 }
