@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'mockData.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -62,10 +60,10 @@ class _MyHomePageState extends State<MyHomePage> {
     Container(decoration: BoxDecoration(border: Border.all(color: Colors.blueAccent)), child: Center(child: Text("Favorite view"),),),
     Container(decoration: BoxDecoration(border: Border.all(color: Colors.greenAccent)),child: Center(child: Text("Cart view"),),)
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: Text(
@@ -74,7 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         titleSpacing: 0,
         leading: GestureDetector(
-          onTap: () {/* Write listener code here */},
+          onTap: () {},
           child: Icon(
             Icons.menu,
             size: 30.0,
@@ -97,7 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-      body:  Stack(
+      body: Stack(
         children:[
          _children[_index],
           Positioned(
@@ -115,10 +113,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
 class BottomNavBar extends StatelessWidget {
 
-  int currentIndex = 0;
-  void Function(int) ontapped= (int){};
+  final int currentIndex;
+  final void Function(int) ontapped;
 
-  BottomNavBar(this.currentIndex,this.ontapped);
+  BottomNavBar(this.currentIndex, this.ontapped);
 
   @override
   Widget build(BuildContext context) {
@@ -180,9 +178,6 @@ class _CarouselWidgetState extends State<CarouselWidget> {
                   return Container(
                     width: MediaQuery.of(context).size.width,
                     padding: EdgeInsets.symmetric(horizontal: 10.0),
-                    decoration: BoxDecoration(
-                      //color: Colors.blue
-                    ),
                     child: Stack(
                       alignment:Alignment.centerLeft,
                       children:[
@@ -243,12 +238,9 @@ class _CarouselWidgetState extends State<CarouselWidget> {
   }
 }
 
-class ProductList extends StatefulWidget {
-  @override
-  _ProductListState createState() => _ProductListState();
-}
 
-class _ProductListState extends State<ProductList> {
+class ProductList extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
 
