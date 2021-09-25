@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 
 class SearchProducts extends StatelessWidget {
+  final fieldText = TextEditingController();
+
   List<String> _result = [
     "Artsy black sling bag",
     "Berkely sling bag",
     "Sling bag color"
   ];
+
+  void clearText() {
+    fieldText.clear();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +28,7 @@ class SearchProducts extends StatelessWidget {
                   Icons.close,
                   size: 27,
                 ),
-                onTap: () {},
+                onTap: clearText,
               )),
           Container(
               decoration: BoxDecoration(
@@ -30,6 +36,7 @@ class SearchProducts extends StatelessWidget {
                       bottom: BorderSide(color: Colors.black, width: 1.2))),
               child: TextField(
                 style: TextStyle(fontSize: 22),
+                controller: fieldText,
                 decoration: InputDecoration(
                     hintText: 'Type here to search', border: InputBorder.none),
               )),
