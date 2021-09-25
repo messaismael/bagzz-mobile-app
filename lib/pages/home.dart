@@ -95,7 +95,8 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          elevation: 0,
+          backgroundColor: Colors.white12,
           title: Text(
             "bagzz",
             style: TextStyle(color: Colors.black, fontWeight: FontWeight.w900),
